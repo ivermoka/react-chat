@@ -12,40 +12,28 @@ const Chat = () => {
   const scroll = useRef();
   
   useEffect(() => {
-    const q = query(collection(db, 'messages'));
-    
-    try {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let messages = [];
-        querySnapshot.forEach((doc) => {
-          messages.push({ ...doc.data(), id: doc.id });
-        });
-        setMessages(messages);
-        console.log(messages);
+    const q = query(collection(db, 'messages'), orderBy('timestamp'));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let messages = [];
+      console.log("test1")
+      querySnapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+        console.log("test")
       });
-      // return onSnapshot(q, (snapshot) => {
-      //   const messagesData = snapshot.docs.map((doc) => ({...doc.data(), id: doc.id }));
-      //   setMessages(messagesData);
-      //   
-      // })
-      
-      
-    }
-    catch (error) {
-      console.log(error);
-    }
-    
-    // return () => unsubscribe();
+      setMessages(messages);
+      console.log(messages)
+    });
+    return () => unsubscribe();
   }, []);
 
   return (
     <>
         <main className={style.main}>
         
-        {messages &&
-          messages.map((message) => (
+        {messages.map((message) => (
             <Message key={message.id} message={message} />
-        ))}
+          ))}
+      
 
         </main>
         {/* Send Message component */}

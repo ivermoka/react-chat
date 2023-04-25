@@ -1,15 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Message from './Message';
+import SendMessage from './SendMessage';
 import { db } from '../firebase';
 import {query, collection, orderBy, onSnapshot} from "firebase/firestore" ; 
 
 const style = {
-    main: `flex flex-col p-[10px] relative`
+  main: `flex flex-col p-[10px] relative min-h-[100vh] overflow-y-scoll`,
 }
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
-  const scroll = useRef();
   
   useEffect(() => {
     const q = query(collection(db, 'messages'), orderBy('timestamp'));
@@ -37,9 +37,7 @@ const Chat = () => {
 
         </main>
         {/* Send Message component */}
-        <span ref={scroll}>
-
-        </span>
+        <SendMessage />
     </>
     
   )
